@@ -1,0 +1,357 @@
+@extends('layouts.admin')
+@section('title', 'Create New User')
+
+@section('content')
+<div class="max-w-4xl mx-auto p-6 space-y-6 fade-in-up">
+    <!-- Header -->
+    <div class="modern-card p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Create New User</h1>
+                <p class="text-gray-600">Add a new user to the system with comprehensive information</p>
+            </div>
+            <a href="{{ route('admin.users') }}" class="btn btn-secondary">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Users
+            </a>
+        </div>
+    </div>
+
+    <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        @csrf
+
+        <!-- Personal Information -->
+        <div class="modern-card p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                Personal Information
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
+                    <input type="text" 
+                           name="name" 
+                           id="name"
+                           value="{{ old('name') }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('name') border-red-500 @enderror"
+                           required>
+                    @error('name')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
+                    <input type="email" 
+                           name="email" 
+                           id="email"
+                           value="{{ old('email') }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('email') border-red-500 @enderror"
+                           required>
+                    @error('email')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                    <input type="tel" 
+                           name="phone" 
+                           id="phone"
+                           value="{{ old('phone') }}"
+                           placeholder="+216 XX XXX XXX"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('phone') border-red-500 @enderror">
+                    @error('phone')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="date_of_birth" class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
+                    <input type="date" 
+                           name="date_of_birth" 
+                           id="date_of_birth"
+                           value="{{ old('date_of_birth') }}"
+                           max="{{ date('Y-m-d') }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('date_of_birth') border-red-500 @enderror">
+                    @error('date_of_birth')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- Profile Image -->
+            <div class="mt-6">
+                <label for="profile_image" class="block text-sm font-semibold text-gray-700 mb-2">Profile Image</label>
+                <div class="flex items-center space-x-6">
+                    <div class="flex-shrink-0">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                            <span id="initials">U</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <input type="file" 
+                               name="profile_image" 
+                               id="profile_image"
+                               accept="image/*"
+                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <p class="mt-2 text-sm text-gray-500">PNG, JPG, GIF up to 2MB</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="modern-card p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Contact Information
+            </h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Address</label>
+                    <textarea name="address" 
+                              id="address"
+                              rows="3"
+                              placeholder="Enter full address"
+                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('address') border-red-500 @enderror">{{ old('address') }}</textarea>
+                    @error('address')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="city" class="block text-sm font-semibold text-gray-700 mb-2">City</label>
+                        <input type="text" 
+                               name="city" 
+                               id="city"
+                               value="{{ old('city') }}"
+                               placeholder="e.g., Tunis"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('city') border-red-500 @enderror">
+                        @error('city')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="country" class="block text-sm font-semibold text-gray-700 mb-2">Country</label>
+                        <select name="country" 
+                                id="country"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('country') border-red-500 @enderror">
+                            <option value="">Select Country</option>
+                            <option value="Tunisia" {{ old('country') === 'Tunisia' ? 'selected' : '' }}>Tunisia</option>
+                            <option value="Algeria" {{ old('country') === 'Algeria' ? 'selected' : '' }}>Algeria</option>
+                            <option value="Morocco" {{ old('country') === 'Morocco' ? 'selected' : '' }}>Morocco</option>
+                            <option value="Libya" {{ old('country') === 'Libya' ? 'selected' : '' }}>Libya</option>
+                            <option value="Egypt" {{ old('country') === 'Egypt' ? 'selected' : '' }}>Egypt</option>
+                            <option value="Other" {{ old('country') === 'Other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                        @error('country')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Contact -->
+        <div class="modern-card p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+                Emergency Contact
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="emergency_contact" class="block text-sm font-semibold text-gray-700 mb-2">Emergency Contact Name</label>
+                    <input type="text" 
+                           name="emergency_contact" 
+                           id="emergency_contact"
+                           value="{{ old('emergency_contact') }}"
+                           placeholder="e.g., John Doe"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('emergency_contact') border-red-500 @enderror">
+                    @error('emergency_contact')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="emergency_phone" class="block text-sm font-semibold text-gray-700 mb-2">Emergency Phone</label>
+                    <input type="tel" 
+                           name="emergency_phone" 
+                           id="emergency_phone"
+                           value="{{ old('emergency_phone') }}"
+                           placeholder="+216 XX XXX XXX"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('emergency_phone') border-red-500 @enderror">
+                    @error('emergency_phone')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Information (for chauffeurs) -->
+        <div class="modern-card p-6" id="professional-section" style="display: none;">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0M15 17a2 2 0 104 0"></path>
+                </svg>
+                Professional Information
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="license_number" class="block text-sm font-semibold text-gray-700 mb-2">License Number</label>
+                    <input type="text" 
+                           name="license_number" 
+                           id="license_number"
+                           value="{{ old('license_number') }}"
+                           placeholder="e.g., TUN123456789"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('license_number') border-red-500 @enderror">
+                    @error('license_number')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="license_expiry" class="block text-sm font-semibold text-gray-700 mb-2">License Expiry Date</label>
+                    <input type="date" 
+                           name="license_expiry" 
+                           id="license_expiry"
+                           value="{{ old('license_expiry') }}"
+                           min="{{ date('Y-m-d') }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('license_expiry') border-red-500 @enderror">
+                    @error('license_expiry')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Settings -->
+        <div class="modern-card p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+                Account Settings
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="role" class="block text-sm font-semibold text-gray-700 mb-2">User Role *</label>
+                    <select name="role" 
+                            id="role"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('role') border-red-500 @enderror"
+                            required>
+                        <option value="">Select Role</option>
+                        <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Administrator</option>
+                        <option value="chauffeur" {{ old('role') === 'chauffeur' ? 'selected' : '' }}>Chauffeur</option>
+                        <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>Customer</option>
+                    </select>
+                    @error('role')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password *</label>
+                    <input type="password" 
+                           name="password" 
+                           id="password"
+                           minlength="8"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('password') border-red-500 @enderror"
+                           required>
+                    @error('password')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <label for="notes" class="block text-sm font-semibold text-gray-700 mb-2">Additional Notes</label>
+                <textarea name="notes" 
+                          id="notes"
+                          rows="4"
+                          placeholder="Any additional information or notes..."
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('notes') border-red-500 @enderror">{{ old('notes') }}</textarea>
+                @error('notes')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mt-6 flex items-center">
+                <input type="checkbox" 
+                       name="is_active" 
+                       id="is_active"
+                       value="1"
+                       {{ old('is_active', true) ? 'checked' : '' }}
+                       class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <label for="is_active" class="ml-2 text-sm text-gray-700">Account is active</label>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end space-x-4">
+            <a href="{{ route('admin.users') }}" class="btn btn-secondary">
+                Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Create User
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+// Show/hide professional section based on role
+document.getElementById('role').addEventListener('change', function() {
+    const professionalSection = document.getElementById('professional-section');
+    if (this.value === 'chauffeur') {
+        professionalSection.style.display = 'block';
+    } else {
+        professionalSection.style.display = 'none';
+    }
+});
+
+// Update initials when name changes
+document.getElementById('name').addEventListener('input', function() {
+    const initials = document.getElementById('initials');
+    const name = this.value.trim();
+    if (name) {
+        const words = name.split(' ');
+        if (words.length >= 2) {
+            initials.textContent = (words[0][0] + words[1][0]).toUpperCase();
+        } else {
+            initials.textContent = words[0][0].toUpperCase();
+        }
+    } else {
+        initials.textContent = 'U';
+    }
+});
+
+// Show professional section if role is already selected (for form errors)
+document.addEventListener('DOMContentLoaded', function() {
+    const roleSelect = document.getElementById('role');
+    if (roleSelect.value === 'chauffeur') {
+        document.getElementById('professional-section').style.display = 'block';
+    }
+});
+</script>
+@endsection
